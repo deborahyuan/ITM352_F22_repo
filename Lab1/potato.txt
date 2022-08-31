@@ -1,0 +1,16 @@
+   52  echo potato > hello.html
+   53  echo hello > hello.txt
+   54  cat h*.txt
+   55  cat h*.txt
+   56  cat h*.txt
+   57  cd ..
+   58  mkdir newdir
+   59  rm newdir
+   60  rm hello.txt
+   61  cd Lab1
+   62  rm newdir
+   63  rm newdir
+   64  rm hello.txt
+   65  rm -r newdir
+   66  history
+   67  history
