@@ -6,13 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="products-style.css">
+    
     <script>
+
+        var store_name= "Deborah Yuan"
         var hits = 3;
-        spins = 9;
+        var spins = 9;
     </script>
 </head>
-<body>
+<body onload="var">
    <header> <h1>
+    <p style="text-align: center; font-weight: bold;">
+        Hits:<span id="hits_span">0</span>
+        Spins:<span id="spins_span">0</span>
+        </p>
     <script>
         document.write(store_name)
     </script>'s Used Smart Phone Store</h1>
@@ -44,7 +51,23 @@
         <img src= "http://dport96.github.io/ITM352/morea/080.flow-control-II/Blackberry.jpg">
     </section>
 </main></div>
-<script> var store_name= "Deborah Yuan"</script>
-<footer>Your One Stop Phone Shop</footer>
+<footer>Your One Stop Phone Shop for Used Phones -
+    <script>
+        document.write(store_name)
+    </script>'s Used Smartphone Store
+</footer>
 </body>
+
+<span id="hits_span"><script>
+    var hits = 3
+</script></span>
+<script>
+    hits_span.innerHTML = hits;
+</script>
+<span id="spins_span"><script>
+    var spins = 4
+</script></span>
+<script>
+    spins_span.innerHTML = spins;
+</script>
 </html>
