@@ -26,8 +26,8 @@
     <p>Hit/Spin:<span id="hit_spin_span">0</span></p>
     <span style="font-size: 400%;">
     
-        <b><script>document.write(first_name)</script></b>
-        <i><script>document.write(last_name+"'s")</script></i>
+        <script>document.write("<b>"+first_name+"</b> "+"<i>"+last_name+"'s"+"</i>")</script>
+
     </span>
     <br>
     Used Smart Phone Store</h1>
@@ -79,17 +79,20 @@
     </script>'s Used Smartphone Store</script>
     
     <script>
-        var line=1
-        var line2 +=line
-        var line3 +=line2
-        var now = new Date()
-    document.write(\
-        <table border="1" style="margin-left: auto; margin-right: auto; text-align: center;">
-        <tbody><tr><th colspan="2"><h1>Your One Stop For Used Phones - ${Array.from(first_name)[0]+"."+Array.from(last_name)[0]+.'s"}</h1></th></tr>
-        <tr><td>line</td><td><br>Copyright @ first_name+" "+last_name</td></tr>
-        <tr><td>line2</td><td>2021</td></tr>
-        <tr><td>line3</td><td>11:15 AM</td></tr>
-    </tbody></table>\)
+        var line=1;
+
+        var template = `
+    <table border="1" style="margin-left: auto; margin-right: auto; text-align: center;">
+        <tr><th colspan="2"><h1>Your One Stop For Used Phones - D.P.'s</h1></th></tr>
+        <tr><td>
+           ${line}.
+        </td><td><br />Copyright @ Dan Port</td></tr>
+        <tr><td>${line+1}.</td><td>2021</td></tr>
+        <tr><td>${line+2}.</td><td>11:15 AM</td></tr>
+    </table>`;
+
+    document.write(template);
+    
     </script>
 </footer>
 </body>
