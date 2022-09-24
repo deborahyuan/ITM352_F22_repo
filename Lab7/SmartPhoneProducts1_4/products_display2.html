@@ -40,7 +40,7 @@
             spins++; 
             spins_span.innerHTML=spins; 
             hit_spin_span.innerHTML = (hits/spins).toFixed(2); 
-            if (spins < hits*2 || over_half == true) {
+            if ((spins < hits*2 && hits < spins) || over_half == true) {
                 // code to execute when true
                 over_half = true;
                 win_span.innerHTML = over_half;
