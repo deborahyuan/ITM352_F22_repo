@@ -8,18 +8,17 @@
     <script src="./products_data.js"></script>
 </head>
 <body>
+    <table border="1">
+    <tr><th>Number</th><th>Item</th></tr>
     <script>
-        // use template strings
-        const {count}= require("console");
-    
-    require("./products_data.js");
-    
-    for (counter = 1; eval("typeof name"+counter) != 'undefined'; counter++) {
-        console.log(counter + ". " + eval('name' + counter));
+        for (counter = 1; eval("typeof name"+counter) != 'undefined'; counter++) {
+        var template = `
+        <tr><td>${counter}</td>
+        <td>${eval('name' + counter)}</td></tr>`;
+        document.write(template);
         } 
-    
-    console.log("That's all we have!");
+
     </script>
-    
+ </table>
 </body>
 </html>

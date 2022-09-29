@@ -1,4 +1,4 @@
-name1 = "HTC";
+ name1 = "HTC";
  price1 = 40.00;
  image1 = "http://dport96.github.io/ITM352/morea/080.flow-control-II/HTC.jpg";
 
@@ -14,12 +14,6 @@ name1 = "HTC";
  price4 = 45.00;
  image4 = "http://dport96.github.io/ITM352/morea/080.flow-control-II/Samsung.jpg";
 
-console.log("Product variables loaded...");
-
-/* name5 = "Blackberry";
+name5 = "Blackberry";
  price5 = 10.00;
  image5 = "http://dport96.github.io/ITM352/morea/080.flow-control-II/Blackberry.jpg";
-
- name6 = "Potato";
- price6 = 3.00;
- image6 = "https://api.time.com/wp-content/uploads/2014/11/potato.jpg"; */
