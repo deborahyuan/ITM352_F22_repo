@@ -5,14 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        tr:hover {background-color: yellow;}
+    </style>
+    
 </head>
 <body>
-    <table border="1">
-        <tbody onclick=
+    <table border="1" >
+        <tbody id='table';>  
+
+    <!--THIS WAS PREVIOUSLY IN tbody; removed for the last portion of Ex4:
+        onclick=
         "new_row = this.appendChild(document.createElement('tr'));
         for (p=0; p < rows[0].cells.length; p++) {
             new_cell = new_row.appendChild(document.createElement('td')); 
-             new_cell.innerHTML='xxx'; }";>
+             new_cell.innerHTML='xxx'; }"; -->
+    
        
             <tr>
                 <th style="text-align: center;">Product #</th>
@@ -23,6 +31,7 @@
               </tr>
     <script>
         var product_quantities = [2,1,1,3,12];
+
 
         // array of all products
         // corresponds to product_quantities array
@@ -55,5 +64,17 @@
     </script>
     </tbody>
     </table>
+
+<BR>
+
+<!-- DELETE ROW BUTTON: I think just using table.deleteRow(-1) should work too:
+    <input type="button" value="Delete Last Row" onclick="var tablelength = table.rows.length; table.deleteRow(tablelength-1);"> -->
+
+    <input type="button" value="Add new row" onclick="new_row = table.appendChild(document.createElement('tr'));
+            for (p=0; p < table.rows[0].cells.length; p++) {
+            new_cell = new_row.appendChild(document.createElement('td')); 
+             new_cell.innerHTML='xxx'; }";>
+
+
 </body>
 </html>
