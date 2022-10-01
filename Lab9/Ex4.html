@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table border="1">
+        <tbody onclick=
+        "new_row = this.appendChild(document.createElement('tr'));
+        for (p=0; p < rows[0].cells.length; p++) {
+            new_cell = new_row.appendChild(document.createElement('td')); 
+             new_cell.innerHTML='xxx'; }";>
+       
+            <tr>
+                <th style="text-align: center;">Product #</th>
+                <th style="text-align: center;">Name</th>
+                <th style="text-align: center;">Price</th>
+                <th style="text-align: center;">Quantity</th>
+                <th style="text-align: center;">Extended Cost</th>
+              </tr>
+    <script>
+        var product_quantities = [2,1,1,3,12];
+
+        // array of all products
+        // corresponds to product_quantities array
+        // product_quantities[i] is the quantity for products[i]
+       
+        var products = [
+        { 'name': 'small gumball', 'price': 0.02 },
+        { 'name': 'medium gumball', 'price': 0.05 },
+        { 'name': 'large gumball', 'price': 0.07 },
+        { 'name': 'small jawbreaker', 'price': 0.06 },
+        { 'name': 'large jawbreaker', 'price': 0.10 }
+        ];
+
+        /*for (i=0; i < product_quantities.length; i++) {
+                document.write(`<tr><td>${i+1}</td><td>${product_quantities[i]}</td></tr>`);
+        }*/
+
+        var extended_price;
+        for (i=0; i < products.length; i++) {
+            extended_price = products[i].price * product_quantities[i];
+            document.write(`<tr><td>${i+1}</td><td>${products[i].name}</td><td>$${products[i].price.toFixed(2)}</td>
+                <td>${product_quantities[i]}</td>
+                <td>$${extended_price.toFixed(2)}</td><tr>`);
+                }
+    
+
+
+        
+
+    </script>
+    </tbody>
+    </table>
+</body>
+</html>
