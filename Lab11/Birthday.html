@@ -7,34 +7,155 @@
     <title>Document</title>
 </head>
 <body>
-    <script>
-
-    
-    var birthday = String(8/3/2013); // starting birthday value, written as string so it won't evaluate
-    var step1 = String(birthday).slice(-2); // select last 2 digits off of year
+    <script>  
+    var dateInput = "08/03/2013"; // starting birthday value, written as string so it won't evaluate (m/d/yyyy) OR (mm/dd/yyyy) are both accepted formats
+    var birthday = dateInput.split("/"); // splitting date into parts, assigning variables
+    var month = Number(birthday[0]);
+    var day = Number(birthday[1]);
+    var year = Number(birthday[2]);
+    var step1 = String(year).slice(-2); // select last 2 digits off of year
     var step2 = parseInt(Number(step1)/4); // keeps only the interger after dividing by 4}
-    var step3 = Number(step2) + Number(step1); //
-    var step4 = ;
-    var step5 = ;
-    if ((birthday.charAt(1) = 1 && birthday.charAt(2) = "/")) {
-        step5 = birthday.charAt(3) + birthday.charAt(4)
-    }  else if (birthday.charAt(1) = 0 && birthday.charAt(2)= 1) {
-
-    }
-
-/*for (i=0; i < 10; i++) {
-    document.write(`Step ${i} = ${('step'+i)}<BR>`)
-};
-
-
- /*for (i=0; i < products.length; i++) {
-            extended_price = products[i].price * product_quantities[i];
-            document.write(`<tr><td>${i+1}</td><td>${products[i].name}</td><td>$${products[i].price.toFixed(2)}</td>
-                <td>${product_quantities[i]}</td>
-                <td>$${extended_price.toFixed(2)}</td><tr>`);
+    var step3 = Number(step2) + Number(step1); // interger portion added to last two digits of the year
+    var step4; // empty
+    var step5; // empty
+        switch (month) { // takes the number for the full month before it, besides for Jan
+            case 1 || 01: // Jan
+                step5=step3+day;
+                break;
+            case 2 || 02: // Feb
+                step4= 3; //mod(x,7) for Jan
+                break;
+            case 3 || 03: // March
+                step4= 3; //mod(x,7) for Feb
+                break;
+            case 4 || 04: // April
+                step4= 6; //mod(x,7) for March
+                break;
+            case 5 || 05: // May
+                step4= 1; //mod(x,7) for April
+                break;
+            case 6 || 06: // June
+                step4= 4; //mod(x,7) for May
+                break;
+            case 7 || 07: // July
+                step4= 6; //mod(x,7) for June
+                break;
+            case 8 || 08: // Aug
+                step4= 2; //mod(x,7) for July
+                break;
+            case 9 || 09: // Sept
+                step4= 5; //mod(x,7) for Aug
+                break;
+            case 10: // Oct
+                step4= 0; //mod(x,7) for Sept
+                break;
+            case 11: // Nov
+                step4= 3; //mod(x,7) for Oct
+                break;
+            case 12: // Dec
+                step4= 5; //mod(x,7) for Nov
+         };
+    var step6 = step3+step4; // add num associated w/ month to step 3
+    var step7 = step6+day; //
+    var step8; // empty
+        if (step5='undefined') {
+            step8=step7;
+        } else {
+            step8=step5;
+        }
+    
+    function leapyear(year) { // CREATED LEAP YEAR FUNCTION
+        var leapdecision;
+        if (year%4 == 0) { // if divisible by 4, then next layer
+            if (year%100 == 0) { // if divisible by 100, then next layer
+                if (year%400 == 0) { // if divisible by 400, then it is a leap year
+                    leapdecision="Yes"
+                } else {
+                    leapdecision="No"
                 }
-    */
-</script>
-
+            } else {
+                leapdecision = "Yes"
+            }
+        } else {
+            leapdecision = "No"
+        }
+        return leapdecision
+        }
+    
+    var step1900;
+    var step2000;
+    var total;
+    if (year >= 2000 && year<3000) { // 2000-2999
+        step2000= leapyear(year) // determine leap year
+        if (step2000 != "No") {
+            total= step8-1;
+        } else if (month=01||1||02||2) {
+            total=step8-2;
+        } else {
+            total= step8-1;
+        }
+    } else if (year >=1900 && year<2000) { // 1900-1999
+        step1900=leapyear(year) // determine leap year
+        if (step1900 !="No") {
+            total= step8;
+        } else if (month=01||1||02||2) {
+            total = step8-1;
+        } else {
+            total = step8
+        }
+    }
+    var finaltotal;
+    if (total>7) {
+        finaltotal = total%7
+    } else {
+        finaltotal=total
+    }
+    var dayoftheweek;
+    switch (finaltotal) {
+            case 0: // Sunday
+            dayoftheweek = 'Sunday';
+            break;
+            case 1: // Monday
+            dayoftheweek = 'Monday';
+            break;
+            case 2: // Tuesday
+            dayoftheweek = 'Tuesday';
+            break;
+            case 3: // Wednesday
+            dayoftheweek = 'Wednesday';
+            break;
+            case 4: // Thursday
+            dayoftheweek = 'Thursday';
+            break;
+            case 5: // Friday
+            dayoftheweek = 'Friday';
+             break;
+            case 6: // Saturday
+            dayoftheweek = 'Saturday';
+            break;
+    }
+        
+document.write(`
+    dateInput = ${dateInput}<BR>
+    birthday = ${birthday}<BR>
+    month = ${month}<BR>
+    day = ${day}<BR>
+    year = ${year}<BR>
+    step1 = ${step1}<BR>
+    step2 = ${step2}<BR>
+    step3 = ${step3}<BR>
+    step4 = ${step4}<BR>
+    step5 = ${step5}<BR>
+    step6 = ${step6}<BR>
+    step7 = ${step7}<BR>
+    step8 = ${step8}<BR>
+    step for 1900 leap year = ${step1900}<BR>
+    step for 2000 leap year = ${step2000}<BR>
+    total = ${total}<BR>
+    final total = ${finaltotal}<BR>
+    Day of the Week = ${dayoftheweek}<BR>
+`)
+    </script>  
 </body>
 </html>
+
