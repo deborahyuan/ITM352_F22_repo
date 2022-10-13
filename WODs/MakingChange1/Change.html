@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var dollaramount = .24 // starting dollar amount
+        var centconversion = dollaramount*100 // conversion to cents
+        var quarters;
+        var quarterremainder
+        if (centconversion >= 25) { // if greater than or equal to 1 quarter, then find # of quarters, then save remainder
+            quarters = parseInt(centconversion/25)
+            quarterremainder = centconversion%25 // remainder is stored as quarter remainder
+        } else {
+            quarters = 0
+            quarterremainder = centconversion
+        }
+
+        var dimes;
+        var dimeremainder;
+        if (quarterremainder >= 10) {
+            dimes = parseInt(quarterremainder/10)
+            dimeremainder = quarterremainder%10
+        } else {
+            dimes = 0
+            dimeremainder=quarterremainder
+        }
+
+        var nickels;
+        var nickelremainder;
+        if (dimeremainder >= 5) {
+            nickels = parseInt(dimeremainder/5)
+            nickelremainder = dimeremainder%5
+        } else {
+            nickels = 0
+            nickelremainder = dimeremainder
+        }
+
+        var pennies;
+        if (nickelremainder >= 1) {
+            pennies = parseInt(nickelremainder/1)
+        } else {
+            pennies = 0
+        }
+
+        document.write(`Starting Dollar amount = $${dollaramount}
+        <BR> Starting Cent amount = ${centconversion}
+        <BR> Quarters = ${quarters}
+        <BR> Dimes = ${dimes}
+        <BR> Nickels = ${nickels}
+        <BR> Pennies = ${pennies}`)
+    </script>
+</body>
+</html>
