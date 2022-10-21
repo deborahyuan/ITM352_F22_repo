@@ -31,7 +31,7 @@
 
     var quantities = [] 
     let params= (new URL(document.location)).searchParams;
-    params.forEach(
+    params.forEach( // for each iterates through all the keys
     function(value,key)
     {
       quantities.push(value);
