@@ -29,18 +29,17 @@
     }
 }
 
-  var quantities = [];
-  let params = (new URL(document.location)).searchParams;
-  params.forEach ( // for each iterates through all the keys
+    var quantities = [] 
+    let params= (new URL(document.location)).searchParams;
+    params.forEach( // for each iterates through all the keys
     function(value,key)
     {
       quantities.push(value);
-    }
-  )
-
+    })
+    
   function generate_item_rows(quantities) {
     for (let i in quantities) {
-      if (quantities[i] == 0) {
+      if (quantities[i]== 0) {
         continue;
       }
       else if (isNotNegativeInteger(quantities[i]) != true) {

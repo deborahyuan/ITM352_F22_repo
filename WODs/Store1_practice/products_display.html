@@ -29,16 +29,15 @@
             for (i=0; i < products.length; i++) {
             document.write(`
             <section class="item">
-                <form action="./invoice.html" method="GET">
                 <h2>${products[i].brand}</h2>
-                <label id ="quantitylabel" name="quantity${[i]}_label">Quantity<BR>Desired</label>
-                <input type="text" onkeyup="checkQuantityTextbox();" name="quantity${[i]}" id="quantitybox"></input>
+                <form method="get" action="./invoice.html">
+                    <label id="quantitylabel" name="quantity${[i]}_label">Quantity <BR> Desired</label>
+                    <input type="text" id="quantitybox" name="quantity${[i]}"></input>
                 <p>$${products[i].price}</p>
                 <img src="${products[i].image}">
             </section>
             `);
         }
- 
             </script>
         </main>
     </div>
@@ -46,7 +45,7 @@
         <h1>
             Your One Stop For Used Phones
         </h1>
-        <button type="submit">Purchase</button>
+        <button type="submit">Purchase</input></form>
     </footer>
 </body>
 
