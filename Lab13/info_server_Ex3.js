@@ -10,7 +10,6 @@ app.get('/test', function (request, response, next) { //  listen to get path; th
     next();
 });
 
-
 app.all('*', function (request, response, next) { // * = listen to all paths; the function will get called if incoming info matches rules
     console.log(request.method + ' to path ' + request.path);
     next();
@@ -25,7 +24,7 @@ app.post("/process_form", function (request, response) {
         } else {
             response.send(`Plese enter a valid quantity -- hit the back button please`);
         }     
-    };
+    }
  });
 
 app.listen(8080, () => console.log(`listening on port 8080`)); // note the use of an anonymous function here to do a callback
