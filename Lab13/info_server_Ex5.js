@@ -15,6 +15,15 @@ app.all('*', function (request, response, next) { // * = listen to all paths; th
     next();
 });
 
+var products = require(__dirname + '/product_data.json');
+products.forEach( (prod,i) => {prod.total_sold = 0}); // for each element of the array that it iterates through, it assigns the attribute the value of 0
+
+app.get("/product_data.js", function (request, response, next) { // if /product_data.js is being requested, then send back products as a string
+   response.type('.js');
+   var products_str = `var products = ${JSON.stringify(products)};`;
+   response.send(products_str);
+});
+
 function isNonNegativeInteger(queryString, returnErrors = false) {
     errors = []; // assume no errors at first
     if (Number(queryString) != queryString) {
@@ -33,16 +42,13 @@ function isNonNegativeInteger(queryString, returnErrors = false) {
     }
 }
 
-app.post("/process_form", function (request, response) {
-    //response.send(request.body)
+app.post("/process_form", function (request, response) { // process form by redirecting to the receipt page
     var q = request.body['text1'];
     if (typeof q != 'undefined') {
-        if(isNonNegativeInteger(q)) {
-                response.send(`Thank you for purchasing <B>${q}</B> things!`);
-        } else {
-            response.send(`Plese enter a valid quantity -- hit the back button please`);
-        }     
-    }
- });
+        if(isNonNegativeInteger(q)) { // we have a valid quantity
+        response.redirect('receipt.html?quantity=' + q)
+} else {
+    response.redirect('order_page.html?error=Invalid%20Quantity&quantity_textbox=' + q);
+}}})
 
 app.listen(8080, () => console.log(`listening on port 8080`)); // note the use of an anonymous function here to do a callback

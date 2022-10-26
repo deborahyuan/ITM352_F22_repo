@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <script src="./product_data.js"> // link to server</script>
+    <title>Order Here</title>
 </head>
 
 <body>
@@ -29,8 +30,8 @@
                 return false;
             }
         }
-        function checkQuantityTextbox() {
-            let input_string = document.getElementById("quantity_textbox").value;
+        function checkQuantityTextbox(the_object) {
+            let input_string = the_object.value;
             let error_array = isNonNegativeInteger(input_string, true);
             if (error_array.length == 0) {
                 qty_textbox_message.innerHTML = input_string;
@@ -50,9 +51,16 @@
         }
         // pasted from display_purchase
         let params = (new URL(document.location)).searchParams;
+
         console.log("Params=" + params);
-        if (params.has("quantity_textbox")){
-            let the_text = params.get("quantity_textbox");
+        // check for error and if there is an error, pop out an alert
+        if (params.has("error")){
+            let err_msg = params.get("error");
+            alert(err_msg);
+
+        /*
+        if (params.has("text1")){
+            let the_text = params.get("quantity");
 
             // Validate the input and if good, thank the user, otherwise, print error message
             if (isNonNegativeInteger(the_text)) {
@@ -60,23 +68,31 @@
             } else {
                 document.write(`Enter a valid quantity bozo!`);
 
-            }
+            }*/
         }
 
 
     </script>
     <form name="quantity_form" action="/process_form" method="post">
+        <script>// calling product data AND price data from the server
+        for (i=0; i<products.length; i++){
+            document.write(`<h3>${products[i]['name']} at $${products[i]["price"]}</h3>`)
+            document.write(`<h4>${products[i]["total_sold"]} ${products[i]["name"]} have been sold!</h4>`);
+     }
+</script> 
         <label>Buy Something!:</label>
-        <input type="text" onkeyup="checkQuantityTextbox();" id="quantity_textbox" name="quantity_textbox"></input>
+        <input type="text" onkeyup="checkQuantityTextbox(this);" id="textbox1" name="text1"></input>
+        <BR>
+        <input type="text" onkeyup="checkQuantityTextbox(this);" id="textbox2" name="text2"></input>
         <BR>
         <span id='qty_textbox_message'>Enter a quantity</span>
         <BR>
         <input type="submit" value="Purchase!"></input>
 </form>
     <script>
-            if (params.has('quantity_textbox')) { // STICKY FORM:if there is a quantity textbox, this will take the preexisting value and put it into the textbox again
-             quantity_form["quantity_textbox"].value = params.get('quantity_textbox');
-              checkQuantityTextbox(quantity_form["quantity_textbox"]);
+            if (params.has('text1')) { // STICKY FORM:if there is a quantity textbox, this will take the preexisting value and put it into the textbox again
+             quantity_form["text1"].value = params.get('text1');
+              checkQuantityTextbox(quantity_form["text1"]);
             }
     </script>
 </body>
