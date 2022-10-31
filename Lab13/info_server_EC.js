@@ -51,7 +51,7 @@ app.post("/process_form", function (request, response) { // process form by redi
         let brand_price = products[i]['price'];
         if (isNonNegativeInteger(q)) {
             products[i]['total_sold'] += Number(q);
-            receipt += `<h3>Thank you for purchasing: ${q} ${brand}. Your total is \$${q * brand_price}!</h3>`; // render template string
+            receipt += `<h3>Thank you for purchasing: ${q} ${brand}. Your total is $${q * brand_price}!</h3>`; // render template string
         } else {
             receipt += `<h3><font color="red">${q} is not a valid quantity for ${brand}!</font></h3>`;
         }
