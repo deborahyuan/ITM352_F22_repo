@@ -22,7 +22,29 @@
     <script src="./products.json"></script> <!-- loading in product data -->
 
 </head>
+<script>
+          function isNonNegativeInteger(queryString, returnErrors = false) {
+            errors = []; // assume no errors at first
+            if (Number(queryString) != queryString) {
+                errors.push('Not a number!'); // Check if string is a number value
+            } else {
+                if (queryString < 0) errors.push('Negative value!'); // Check if it is non-negative
+                if (parseInt(queryString) != queryString) errors.push('Not an integer!'); // Check that it is an integer
+            }
 
+            if (returnErrors) {
+                return errors;
+            } else if (errors.length == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        function checkQuantityTextbox(theTextbox) {
+            errs = isNonNegativeInteger(theTextbox.value, true);
+            document.getElementById(theTextbox.name + '_message').innerHTML = errs.join(", ");
+        }
+</script>
 <body>
 
     <nav class="navbar navbar-inverse">
@@ -51,37 +73,34 @@
       
       <div class="jumbotron">
         <div class="container text-center">
-          <h1>My Portfolio</h1>      
-          <p>Some text that represents "Me"...</p>
+          <h1>iPhone</h1>      
         </div>
       </div>
         <main>    
       <div class="container-fluid bg-3 text-center">    
-        <h3>Some of my Work</h3><br>
-        <script>
-            for (i=0; i < products.length; i++) {
-            document.write(`
-            <div class="col-sm-3">
-                <form action="./invoice.html" method="GET">
-                <h2>${products[i].name}</h2>
-                <label id ="quantitylabel" name="quantity${[i]}_label">Quantity<BR>Desired</label>
-                <input type="text" onkeyup="checkQuantityTextbox();" name="quantity${[i]}" id="quantitybox"></input>
-                <p>$${products[i].price}</p>
-                <img src="${products[i].image}">
-            </div>
-            `);
-        }
-        </script>
-      </div><br>
-
+        <h3>Current Available Models</h3><br>
+        <form name='quantity_form' action="/purchase" method="POST">
+          <script>
+              for (i in products) {
+                  document.write(`<h2>${products[i]["name"]}</h2>
+                  <label id ="quantitylabel" name="quantity${[i]}_label">Quantity<BR>Desired</label>
+                  <input type="text" name="quantity_textbox[${i}]" onkeyup="checkQuantityTextbox(this);"></input>
+                  <p>$${products[i].price}</p>
+                  <span id="quantity_available[${i}]_message">Quantity Available</span>
+                  <p>${products[i].quantity_available}</p>
+                  <img src="${products[i].image}">
+                  <span id="quantity_textbox[${i}]_message">Enter a quantity</span>
+                  `) }
+          </script>
+          <br>
 </main>
     
 <footer class="container-fluid text-center">
-    <h1>
-        Your One Stop For Used Phones
-    </h1>
-    <button type="submit">Purchase</button>
-</footer>
+    <h2>
+        Apple Online Store
+    </h2>
+    <input type="submit" value='Purchase'></input>
+  </form>
 </footer>
 
 </body>
