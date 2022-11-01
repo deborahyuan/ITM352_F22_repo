@@ -34,8 +34,8 @@
             let errs = isNonNegativeInteger(theTextbox.value, true);
             document.getElementById(theTextbox.name + '_message').innerHTML = errs.join(", ");
         }
-        function checkQuantityTextbox(the_object) {
-            let input_string = the_object.value;
+        function checkQuantityTextbox(theTextbox) {
+            let input_string = theTextbox.value;
             let error_array = isNonNegativeInteger(input_string, true);
             if (error_array.length == 0) {
                 qty_textbox_message.innerHTML = input_string;

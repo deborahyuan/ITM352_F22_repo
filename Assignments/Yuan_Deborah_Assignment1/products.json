@@ -1,32 +1,38 @@
 [
     {
-    "name" : "HTC",
-    "price" : 165.00,
-    "image" : "http://dport96.github.io/ITM352/morea/080.flow-control-II/HTC.jpg",
+    "name" : "iPhone 14 Pro",
+    "price" : 999.00,
+    "image" : "https://raw.githubusercontent.com/deborahyuan/Assignment1imgs/main/Assignment1_images/iPhone14pro.jpeg",
     "quantity_available": 5
     },
     {
-    "name" : "Apple",
-    "price" : 285.00,
-    "image" : "http://dport96.github.io/ITM352/morea/080.flow-control-II/iphone-3gs.jpg",
+    "name" : "iPhone 14 Pro Max",
+    "price" : 1099.00,
+    "image" : "https://raw.githubusercontent.com/deborahyuan/Assignment1imgs/main/Assignment1_images/iPhone14promax.jpeg",
     "quantity_available": 5
     },
     {
-    "name" : "Nokia",
-    "price" : 135.00,
-    "image" : "http://dport96.github.io/ITM352/morea/080.flow-control-II/Nokia.jpg",
+    "name" : "iPhone 14",
+    "price" : 799.00,
+    "image" : "https://raw.githubusercontent.com/deborahyuan/Assignment1imgs/main/Assignment1_images/iPhone14.jpeg",
     "quantity_available": 5
     },
     {
-    "name" : "Samsung",
-    "price" : 95.00,
-    "image" : "http://dport96.github.io/ITM352/morea/080.flow-control-II/Samsung.jpg",
+    "name" : "iPhone 14 Plus",
+    "price" : 899.00,
+    "image" : "https://raw.githubusercontent.com/deborahyuan/Assignment1imgs/main/Assignment1_images/iPhone14plus.jpeg",
     "quantity_available": 5
     },
     {
-    "name" : "Blackberry",
-    "price" : 13.00,
-    "image" : "http://dport96.github.io/ITM352/morea/080.flow-control-II/Blackberry.jpg",
+    "name" : "iPhone 13",
+    "price" : 699.00,
+    "image" : "https://raw.githubusercontent.com/deborahyuan/Assignment1imgs/main/Assignment1_images/iPhone13.jpeg",
+    "quantity_available": 5
+    },
+    {
+    "name" : "iPhone 13 Mini",
+    "price" : 599.00,
+    "image" : "https://raw.githubusercontent.com/deborahyuan/Assignment1imgs/main/Assignment1_images/iPhone13mini.jpeg",
     "quantity_available": 5
     }
 ]

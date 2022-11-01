@@ -1,33 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!-- this produces an invoice AFTER valid quantities have been typed and the customer is ready to check out-->
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="./products.json"></script>
-  <title>Document</title>
+  <script src="../products.json"></script>
+  <title>Invoice</title>
 </head>
 
 <body>
-  <!-- This is for the Invoice1 WOD, it creates an Invoice of a purchase-->
+  
 
   <script>
   
-  function isNotNegativeInteger (queryString, returnErrors = false) {
+  function isNonNegativeInteger(queryString, returnErrors = false) { // isNonNegInt function
     errors = []; // assume no errors at first
-    if(Number(queryString) != queryString) errors.push('Not a number!'); // Check if string is a number value
-    if(queryString < 0) errors.push('Negative value!'); // Check if it is non-negative
-    if(parseInt(queryString) != queryString) errors.push('Not an integer!'); // Check that it is an integer
-
-    if(returnErrors) {
-        return errors;
-    } else if (errors.length == 0) {
-        return true;
+    if (Number(queryString) != queryString) {
+      errors.push('Not a number!'); // Check if string is a number value
     } else {
-        return errors;
+      if (queryString < 0) errors.push('Negative value!'); // Check if it is non-negative
+      if (parseInt(queryString) != queryString) errors.push('Not an integer!'); // Check that it is an integer
     }
-}
+
+    if (returnErrors) { // error portion of isNonNegInt
+      return errors;
+    } else if (errors.length == 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   var quantities = [];
   let params = (new URL(document.location)).searchParams;
@@ -43,14 +48,14 @@
       if (quantities[i] == 0) {
         continue;
       }
-      else if (isNotNegativeInteger(quantities[i]) != true) {
+      else if (isNonNegativeInteger(quantities[i]) != true) {
         let extended_price = 0;
         document.write(`
     <tr>
       <td width="43%">${products[i].name}</td>
-      <td align="center" width="11%">${quantities[i]}<div style="color:red;">${isNotNegativeInteger(quantities[i])}</div></td>
-      <td width="13%">$${products[i].price}</td>
-      <td width="54%">$${extended_price}</td>
+      <td align="center" width="11%">${quantities[i]}<div style="color:red;">${isNonNegativeInteger(quantities[i])}</div></td>
+      <td width="13%">$${(products[i].price).toFixed(2)}</td>
+      <td width="54%">$${(products[i].price).toFixed(2)}</td>
     </tr>
       `);
       } else {
@@ -59,8 +64,8 @@
     <tr>
       <td width="43%">${products[i].name}</td>
       <td align="center" width="11%">${quantities[i]}</td>
-      <td width="13%">$${products[i].price}</td>
-      <td width="54%">$${extended_price}</td>
+      <td width="13%">$${(products[i].price).toFixed(2)}</td>
+      <td width="54%">$${(products[i].price).toFixed(2)}</td>
     </tr>
       `);
       subtotal += extended_price

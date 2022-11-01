@@ -1,8 +1,32 @@
+const { getRandomValues } = require('crypto');
 var express = require('express');
 var app = express();
+var path = require('path');
 
-app.use(express.static(__dirname + '/public'));
+
+app.use(express.static(__dirname + '/public')); // route all other GET/POST requests to files in public 
+app.use('/css',express.static(__dirname + '/public')); // ?
 app.use(express.urlencoded({ extended: true }));
+
+// functions
+function isNonNegativeInteger(queryString, returnErrors = false) {
+    errors = []; // assume no errors at first
+    if (Number(queryString) != queryString) {
+        errors.push('Not a number!'); // Check if string is a number value
+        } else {
+        if (queryString < 0) errors.push('a Negative value!'); // Check if it is non-negative
+        if (parseInt(queryString) != queryString) errors.push('Not an integer!'); // Check that it is an integer
+        }
+
+    if (returnErrors) {
+        return errors;
+    } else if (errors.length == 0) {
+        return true;
+    } else {
+        return false;
+    }
+ }
+
 
 var products = require(__dirname + '/products.json');
 products.forEach( (prod,i) => {prod.total_sold = 0}); // for each element of the array that it iterates through, it assigns the attribute the value of 0
@@ -25,66 +49,52 @@ app.all('*', function (request, response, next) {
 });
 
 // process purchase request (validate quantities, check quantity available)
-function isNonNegativeInteger(queryString, returnErrors = false) {
-   errors = []; // assume no errors at first
-   if(Number(queryString) != queryString) errors.push('Not a number!'); // Check if string is a number value
-   if(queryString < 0) errors.push('Negative value!'); // Check if it is non-negative
-   if(parseInt(queryString) != queryString) errors.push('Not an integer!'); // Check that it is an integer
 
-   if (returnErrors) {
-       return errors;
-   } else if (errors.length == 0) {
-       return true;
-   } else {
-       return false;
-   }
+ app.post("/purchase", function (request, response) { // process form by redirecting to the receipt page
+// Process the form by redirecting to the receipt page if everything is valid.
+
+let valid = true;
+let ordered = "";
+
+let qtys = request.body[`quantity_textbox`];
+
+if (qtys.length === 0) { // All textboxes are empty, returning an error ?? not working though
+    valid = false;
+    response.redirect('products_display.html?error=Invalid%20Quantities,%20No%20items%20have%20been%20selected%20for%20purchase!');
+    response.end();
 }
 
-function checkQuantityTextbox(theTextbox) {
-   errs = isNonNegativeInteger(theTextbox.value, true);
-   document.getElementById(theTextbox.name + '_message').innerHTML = errs.join(", ");
+for (let i in qtys) { // Iterate over all text boxes in the form.
+    q = qtys[i];
+    let model = products[i]['name'];
+    if (q == 0) { // assigning no value to certain models to avoid errors in invoice.html
+        ordered += model + "=" + q + "&";
+    } else if (isNonNegativeInteger(q) && Number(q) <= products[i].quantity_available) { // if q is true, added to ordered string
+            // We have a valid quantity. Add to the ordered string.
+            products[i].quantity_available -= Number(q);
+            ordered += model + "=" + q + "&"; // appears in invoice.html's URL
+            /*response.redirect('invoice.html?' + ordered);*/
+    } else if (Number(q) >= products[i].quantity_available) { // Existing stock is less than desired quantity
+        valid = false;
+       /* response.redirect('products_display.html?error=Invalid%20Quantity,%20Requested%20Quantity%20for%20'+model+'%20Exceeds%20Stock');*/
+    } else if (isNonNegativeInteger(q) != true) { // quantity is "Not a Number, Negative Value, or not an Integer"
+        valid = false;
+       /* response.redirect('products_display.html?error=Invalid%20Quantity,%20Requested%20Quantity%20for%20'+model+'%20is%20'+isNonNegativeInteger(q,true));*/
+    } else { // textbox has gone missing? or some other error
+        valid = false;
+        /* response.redirect('products_display.html?error=Invalid%20Quantity,%20Unknown%20Error%20has%20occured');*/
+    }
 }
 
-app.post("/purchase", function (request, response) { // process form by redirecting to the receipt page
-   function isNonNegativeInteger(queryString, returnErrors = false) {
-      errors = []; // assume no errors at first
-      if(Number(queryString) != queryString) errors.push('Not a number!'); // Check if string is a number value
-      if(queryString < 0) errors.push('Negative value!'); // Check if it is non-negative
-      if(parseInt(queryString) != queryString) errors.push('Not an integer!'); // Check that it is an integer
+if (!valid) {
+    // If we found an error, redirect back to the order page.
+    response.redirect('products_display.html?error=Invalid%20Quantity');
+} else {
+    // If everything is good, redirect to the receipt page.
+    response.redirect('invoice.html?' + ordered);
+}
+});
    
-      if (returnErrors) {
-          return errors;
-      } else if (errors.length == 0) {
-          return true;
-      } else {
-          return false;
-      }
-   }
-   
-   receipt = '';
-   let qtys = request.body[`quantity_textbox`];
-   for (i in qtys) {
-       q = qtys[i];
-       let brand = products[i]['name'];
-       let brand_price = products[i]['price'];
-       if (isNonNegativeInteger(q)) {
-           products[i]['total_sold'] += Number(q);
-           receipt += `<h3>Thank you for purchasing: ${q} ${brand}. Your total is $${q * brand_price}!</h3>`; // render template string
-       } else {
-           receipt += `<h3><font color="red">${q} is not a valid quantity for ${brand}!, ${isNonNegativeInteger(q)}</font></h3>`; // NEEDS ATTENTION!
-       }
-   }
-   response.send(receipt);
-   response.end();})
-
-   
-
-/* your code here 
-products_array.forEach( (prod,i) => {prod.total_sold = 0}); // for each element of the array that it iterates through, it assigns the attribute the value of 0
-*/
-
-// route all other GET requests to files in public 
-app.use(express.static(__dirname + '/public'));
 
 // start server
 app.listen(8080, () => console.log(`listening on port 8080`));
