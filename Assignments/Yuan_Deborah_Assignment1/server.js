@@ -51,46 +51,49 @@ app.all('*', function (request, response, next) {
 // process purchase request (validate quantities, check quantity available)
 
  app.post("/purchase", function (request, response) { // process form by redirecting to the receipt page
-// Process the form by redirecting to the receipt page if everything is valid.
 
-let valid = true; // assume that all terms are valid
+let validinput = true; // assume that all terms are valid
 let ordered = "";
 let allblank = false; // assume that it ISN'T all blank
+let instock = true;
+let othererrors = false; //assume that there aren't other errors
 
-let qtys = request.body[`quantitytextbox`];
+let customerquantities = request.body[`quantitytextbox`];
 
-for (let i in qtys) { // Iterate over all text boxes in the form.
-    q = qtys[i];
+for (let i in customerquantities) { // Iterate over all text boxes in the form.
+    qtys = customerquantities[i];
     let model = products[i]['name'];
-    if (q == 0) { // assigning no value to certain models to avoid errors in invoice.html
-        ordered += model + "=" + q + "&";
-    } else if (isNonNegativeInteger(q) && Number(q) <= products[i].quantity_available) { // if q is true, added to ordered string
-            // We have a valid quantity. Add to the ordered string.
-            products[i].quantity_available -= Number(q);
-            ordered += model + "=" + q + "&"; // appears in invoice.html's URL
-            /*response.redirect('invoice.html?' + ordered);*/
-    } else if (Number(q) >= products[i].quantity_available) { // Existing stock is less than desired quantity
-        valid = false;
-       /* response.redirect('products_display.html?error=Invalid%20Quantity,%20Requested%20Quantity%20for%20'+model+'%20Exceeds%20Stock');*/
-    } else if (isNonNegativeInteger(q) != true) { // quantity is "Not a Number, Negative Value, or not an Integer"
-        valid = false;
-       /* response.redirect('products_display.html?error=Invalid%20Quantity,%20Requested%20Quantity%20for%20'+model+'%20is%20'+isNonNegativeInteger(q,true));*/
+    if (qtys == 0) { // assigning no value to certain models to avoid errors in invoice.html
+        ordered += model + "=" + qtys + "&";
+    } else if (isNonNegativeInteger(qtys) && Number(qtys) <= products[i].quantity_available) { // if qtys is true, added to ordered string
+            products[i].quantity_available -= Number(qtys); // Stock, or quantity_available is subtracted by the order quantity
+            products[i].quantity_sold = Number(products[i].quantity_sold) + Number(qtys); // EC IR1: Total amount sold, or quantity_sold increases by the order quantity
+            ordered += model + "=" + qtys + "&"; // appears in invoice.html's URL
+    } else if (isNonNegativeInteger(qtys) != true) { // quantity is "Not a Number, Negative Value, or not an Integer"
+        validinput = false;
+    } else if (Number(qtys) >= products[i].quantity_available) { // Existing stock is less than desired quantity
+        instock = false;
     } else { // textbox has gone missing? or some other error
-        valid = false;
-        /* response.redirect('products_display.html?error=Invalid%20Quantity,%20Unknown%20Error%20has%20occured');*/
+        othererrors = true;
     }
 }
 
-if (qtys.join("") == 0) { // if the array qtys adds up to 0, that means there are no quantities being
+if (customerquantities.join("") == 0) { // if the array customerquantities adds up to 0, that means there are no quantities typed in
     allblank = true;
-    console.log(allblank);
 }
 
-if (!valid || allblank) { // if any of the textboxes have invalid quantities OR if all boxes are blank, there is an error
-    // If we found an error, redirect back to the order page.
-    response.redirect('products_display.html?error=Invalid%20Quantity');
+// If we found an error, redirect back to the order page, if not, proceed to invoice
+
+if (allblank) { // if all boxes are blank, there is an error, pops up alert
+    response.redirect('products_display.html?error=Invalid%20Quantity,%20No%20Quantities%20Selected!%20Please%20type%20in%20values!');
+} else if (!validinput ){ // quantity is "Not a Number, Negative Value, or not an Integer", pops up alert
+    response.redirect('products_display.html?error=Invalid%20Quantity,%20Please%20Fix%20the%20Errors%20in%20Red%20on%20the%20Order%20Page!');
+} else if (!instock ){ // Existing stock is less than desired quantity, pops up alert
+    response.redirect('products_display.html?error=Invalid%20Quantity,%20Requested%20Quantity%20Exceeds%20Stock');
+} else if (othererrors) { // textbox has gone missing? or some other error, pops up alert
+    response.redirect('products_display.html?error=Invalid%20Quantity,%20Unknown%20Error%20has%20occured');
 } else {
-    // If everything is good, redirect to the receipt page.
+    // If everything is good, redirect to the invoice page.
     response.redirect('invoice.html?' + ordered);
 }
 });

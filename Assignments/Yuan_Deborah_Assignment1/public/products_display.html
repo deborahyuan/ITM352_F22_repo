@@ -13,6 +13,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
+  <!-- google fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
@@ -33,8 +34,7 @@
 
     /* Add a gray background color and some padding to the footer */
     footer {
-      background-color: #f2f2f2;
-      padding: 25px;
+      background-color: rgba(0, 0, 0, 0);
     }
   </style>
 </head>
@@ -45,7 +45,7 @@ function isNonNegativeInteger(queryString, returnErrors = false) {
     if (Number(queryString) != queryString) {
         errors.push('Not a number!'); // Check if string is a number value
         } else {
-        if (queryString < 0) errors.push('Negative value!'); // Check if it is non-negative
+        if (queryString < 0) errors.push('a Negative value!'); // Check if it is non-negative
         if (parseInt(queryString) != queryString) errors.push('Not an integer!'); // Check that it is an integer
          }
 
@@ -57,14 +57,19 @@ function isNonNegativeInteger(queryString, returnErrors = false) {
         return false;
     }
  }
-        function checkQuantityTextbox(theTextbox) {
+        function checkQuantityTextbox(theTextbox) { // EC IR2: Added additional text and font styles to indicate whether quantities were valid or not
             let input_string = theTextbox.value;
             let error_array = isNonNegativeInteger(input_string, true);
-            if (error_array.length == 0) {
-              document.getElementById(theTextbox.name+ '_message').innerHTML = input_string;
-            } else {
-              document.getElementById(theTextbox.name+ '_message').innerHTML  = error_array.join("; ");
+            if (Number(input_string) > document.getElementById(theTextbox.name+'_available').innerHTML) { // EC IR3: PARTIAL COMPLETION: Having 'quantitytextbox[${i}]_available_message' display a red error message if Available Quantity > Stock
+              document.getElementById(theTextbox.name+ '_message').outerHTML = ('<span id="'+ theTextbox.name + '_message" name="'+ theTextbox.name+'_message"><font color="red"><b>We don\'t have ' +input_string+ ' available.</b></font></span>');
+              return;
             }
+            if (error_array.length == 0) {
+              document.getElementById(theTextbox.name+ '_message').innerHTML = ('You want <b>'+ input_string+'</b>');
+            } else {
+              document.getElementById(theTextbox.name+ '_message').innerHTML  = ('<font color="red"><b>Quantity is '+ error_array.join("; ")+'</b></font>');
+            }
+            
         };
 
         let params = (new URL(document.location)).searchParams;
@@ -93,11 +98,15 @@ function isNonNegativeInteger(queryString, returnErrors = false) {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Apple</a>
+      <a class="navbar-brand" href="#">
+        <img src="https://raw.githubusercontent.com/deborahyuan/Assignment1imgs/main/Assignment1_images/Apple-Logo.png" width="20" alt=""></a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Products</a></li>
+        <li><a href="./index.html">Home</a></li>
+      </ul>
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="./">Products</a></li>
       </ul>
       <!-- saving this code in case I need it for later assignments
       <ul class="nav navbar-nav navbar-right">
@@ -109,23 +118,29 @@ function isNonNegativeInteger(queryString, returnErrors = false) {
   </div>
 </nav>
 
-<div class="container"> <!-- formatting provided by w3 schools -->
+<!-- formatting provided by w3 schools -->
       <form name='quantity_form' action="/purchase" method="POST"> <!-- start of the form -->
         <script>
         for (i in products) { // for loop that loops x amount of times, depending on the number of products in 'products.json'
-          
+          row = "";
+          if (parseInt(i/3) == i/3) { // 
+          document.write(`<div class="container">
+            <div class="row">`) 
+          }}
+          for (i in products){
           document.write(`
-          <div class="row">
-          <div class="col-sm-4">
-          <div class="panel panel-primary">
-          <div class="panel-heading"><b>${products[i].name}</b></div>
+          <div class="col-sm-4" >
+          <div class="panel panel-primary" style="border-radius: 10px 10px 10px 10px; overflow: hidden; box-shadow: 0 0 30px rgba(0, 0, 0, 0.30); border: white;">
+          <div class="panel-heading" style="background-color:black"><b>${products[i].name}</b></div> <!-- some inline css to override the template defaults -->
           <div class="panel-body"><img src="${products[i].image}" class="img-responsive" style="width:100%" alt="Image"></div>
           <div class="panel-footer"><h2 id="price">$${products[i].price}</h2><BR>
           <label id ="quantitylabel" name="quantity${[i]}_label">Quantity Desired</label><BR>
-          <span id="quantitytextbox[${i}]_message" class="quantitytextbox[${i}]_message" name="quantitytextbox[${i}]_message">Enter a quantity</span><BR><BR>
-          <input type="text" id ="quantitytextbox" class="quantitytextbox[${i}]" name="quantitytextbox[${i}]" onkeyup="checkQuantityTextbox(this);" ></input><BR>
-          <label id ="quantityavailablemessage" name="quantity_available[${i}]_message">Quantity Available</label><BR>
-          <p>${products[i].quantity_available}</p>
+          <span id="quantitytextbox[${i}]_message" name="quantitytextbox[${i}]_message">Enter a quantity</span><BR><BR>
+          <input type="text" id ="quantitytextbox" name="quantitytextbox[${i}]" onkeyup="checkQuantityTextbox(this)"></input><BR><BR>
+          <label id ="quantitytextbox[${i}]_available_message" name="quantitytextbox[${i}]_available_message">Quantity Available</label><BR>
+          <p id ="quantitytextbox[${i}]_available" name ="quantitytextbox[${i}]_available">${products[i].quantity_available}</p>
+          <label id ="quantitysoldemessage" name="quantity_sold[${i}]_message">Quantity Sold</label><BR>
+          <p>${products[i].quantity_sold}</p>
          </div>
          </div>
          </div>
@@ -137,11 +152,10 @@ function isNonNegativeInteger(queryString, returnErrors = false) {
 
 
 <footer class="container-fluid text-center"> <!-- footer -->
-  <input type="submit" value='Purchase' id="purchase_button"></input></form>
-  <h2>
-    Apple Online Store
-  </h2>
-
+  <input type="submit" value='Purchase' id="button"></input></form>
+  <h3 class="footertext">
+    <B>Apple Online Store</B>
+  </h3>
 </footer>
 
 </body>
