@@ -1,0 +1,73 @@
+#purchase_button {
+    background-color: lightskyblue;
+    border-color:white;
+    border-width: 5px;
+    color: black;
+    width: 150px;
+    height: 40px;
+    margin: 0;
+    position: relative;
+    border-radius: 12px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: bolder;
+}
+
+h1 {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: bolder;
+}
+
+h2 {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: bolder;
+}
+
+p {
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+/* how to override? */
+.panel-heading { 
+    background-color:black; 
+}
+
+/* invoice table styling */
+.invoice-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9 em;
+    min-width: 400px;
+    font-family: 'Source Sans Pro', sans-serif;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.invoice-table thead tr {
+    background-color: #009879;
+    color: white;
+    text-align: left;
+    font-weight: bold;
+}
+
+.invoice-table th,
+.invoice-table td {
+    padding: 12px 15px;
+}
+
+.invoice-table tbody tr{
+    border-bottom: 1px solid white;
+
+}
+.invoice-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.invoice-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+
+.invoice-table tbody tr:hover {
+    font-weight: bold;
+    color: #009879;
+}

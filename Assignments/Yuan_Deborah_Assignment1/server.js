@@ -53,16 +53,11 @@ app.all('*', function (request, response, next) {
  app.post("/purchase", function (request, response) { // process form by redirecting to the receipt page
 // Process the form by redirecting to the receipt page if everything is valid.
 
-let valid = true;
+let valid = true; // assume that all terms are valid
 let ordered = "";
+let allblank = false; // assume that it ISN'T all blank
 
 let qtys = request.body[`quantity_textbox`];
-
-if (qtys.length === 0) { // All textboxes are empty, returning an error ?? not working though
-    valid = false;
-    response.redirect('products_display.html?error=Invalid%20Quantities,%20No%20items%20have%20been%20selected%20for%20purchase!');
-    response.end();
-}
 
 for (let i in qtys) { // Iterate over all text boxes in the form.
     q = qtys[i];
@@ -86,7 +81,12 @@ for (let i in qtys) { // Iterate over all text boxes in the form.
     }
 }
 
-if (!valid) {
+if (qtys.join("") == 0) { // if the array qtys adds up to 0, that means there are no quantities being purchased
+    allblank = true;
+    console.log(allblank);
+}
+
+if (!valid || allblank) { // if any of the textboxes have invalid quantities OR if all boxes are blank, there is an error
     // If we found an error, redirect back to the order page.
     response.redirect('products_display.html?error=Invalid%20Quantity');
 } else {

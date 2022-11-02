@@ -13,6 +13,9 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
 
   <link href="products-style.css" rel="stylesheet">
   <script src="../products.json"></script> <!-- loading in product data from products.json -->
@@ -63,17 +66,7 @@ function isNonNegativeInteger(queryString, returnErrors = false) {
             } else {
               quantitytextboxmessage.innerHTML = error_array.join("; ");
             }
-        }
-
-
-        function displayPurchase() {
-            let value = document.getElementById('quantity_textbox').value;
-            let is_valid = isNonNegativeInteger(value);
-            if (is_valid) {
-                document.write(`Thank you for ordering ${value} things!`);
-            } /* else {
-                document.write(`Enter a valid quantity bozo!`);
-            }*/
+            console.log(quantitytextboxmessage.innerHTML);
         }
 
         let params = (new URL(document.location)).searchParams;
@@ -122,6 +115,7 @@ function isNonNegativeInteger(queryString, returnErrors = false) {
       <form name='quantity_form' action="/purchase" method="POST"> <!-- start of the form -->
         <script>
         for (i in products) { // for loop that loops x amount of times, depending on the number of products in 'products.json'
+          
           document.write(`
           <div class="row">
           <div class="col-sm-4">
@@ -130,21 +124,22 @@ function isNonNegativeInteger(queryString, returnErrors = false) {
           <div class="panel-body"><img src="${products[i].image}" class="img-responsive" style="width:100%" alt="Image"></div>
           <div class="panel-footer"><h2 id="price">$${products[i].price}</h2><BR>
           <label id ="quantitylabel" name="quantity${[i]}_label">Quantity Desired</label><BR>
-          <input type="text" id ="quantitytextbox" name="quantity_textbox[${i}]" onkeyup="checkQuantityTextbox(this);"></input><BR>
-          <span id="quantitytextboxmessage" name="quantity_textbox[${i}]_message">Enter a quantity</span><BR><BR>
+          <input type="text" onkeyup="checkQuantityTextbox(this);" id ="quantitytextbox" name="quantity_textbox[${i}]" ></input><BR>
+          <span id="quantitytextboxmessage" name="quantity_textbox[i]_message">Enter a quantity</span><BR><BR>
           <label id ="quantityavailablemessage" name="quantity_available[${i}]_message">Quantity Available</label><BR>
           <p>${products[i].quantity_available}</p>
-        </div>
-      </div>
-    </div>
-`)}
+         </div>
+         </div>
+         </div>
+        `)
+        }
 </script>
 </div>
 <br><br>
 
 
 <footer class="container-fluid text-center"> <!-- footer -->
-  <input type="submit" value='Purchase'></input></form>
+  <input type="submit" value='Purchase' id="purchase_button"></input></form>
   <h2>
     Apple Online Store
   </h2>

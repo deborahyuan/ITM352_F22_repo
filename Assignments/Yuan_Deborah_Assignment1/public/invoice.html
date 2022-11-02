@@ -8,12 +8,14 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="../products.json"></script>
+
+  <link href="products-style.css" rel="stylesheet">
+
   <title>Invoice</title>
 </head>
 
 <body>
   
-
   <script>
   
   function isNonNegativeInteger(queryString, returnErrors = false) { // isNonNegInt function
@@ -80,29 +82,32 @@
 
   </script>
 
-  <table border="2">
+<h1>Invoice</h1>
+  <table class="invoice-table"> <!-- base css acquired from yt tutorial (https://www.youtube.com/watch?v=biI9OFH6Nmg&ab_channel=dcode)-->
     <tbody>
+      <thead>
       <tr>
-        <th style="text-align: center;" width="43%">Item</th>
-        <th style="text-align: center;" width="11%">quantity</th>
-        <th style="text-align: center;" width="13%">price</th>
-        <th style="text-align: center;" width="54%">extended price</th>
+        <th style="text-align: center;">Item</th>
+        <th style="text-align: center;">Quantity</th>
+        <th style="text-align: center;">Cost of Item</th>
+        <th style="text-align: center;">Extended Price</th>
       </tr>
+    </thead>
 
       <script>
         generate_item_rows(quantities);
 
         // Compute tax
-        var tax_rate = 0.0575;
+        var tax_rate = 0.0475;
         var tax = tax_rate * subtotal;
 
         // Compute shipping
         var shipping;
         if (subtotal < 50) {
-          shipping = 2;
+          shipping = 5;
         }
         else if (subtotal >= 50 && subtotal < 100) {
-          shipping = 5;
+          shipping = 10;
         }
         else if (subtotal >= 100) {
           shipping = subtotal * 0.05;
