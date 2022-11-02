@@ -57,17 +57,15 @@ function isNonNegativeInteger(queryString, returnErrors = false) {
         return false;
     }
  }
-
-        function checkQuantityTextbox(the_object) {
-            let input_string = the_object.value;
+        function checkQuantityTextbox(theTextbox) {
+            let input_string = theTextbox.value;
             let error_array = isNonNegativeInteger(input_string, true);
             if (error_array.length == 0) {
-              quantitytextboxmessage.innerHTML = input_string;
+              document.getElementById(theTextbox.name+ '_message').innerHTML = input_string;
             } else {
-              quantitytextboxmessage.innerHTML = error_array.join("; ");
+              document.getElementById(theTextbox.name+ '_message').innerHTML  = error_array.join("; ");
             }
-            console.log(quantitytextboxmessage.innerHTML);
-        }
+        };
 
         let params = (new URL(document.location)).searchParams;
         
@@ -120,12 +118,12 @@ function isNonNegativeInteger(queryString, returnErrors = false) {
           <div class="row">
           <div class="col-sm-4">
           <div class="panel panel-primary">
-          <div class="panel-heading"><b>${products[i]["name"]}</b></div>
+          <div class="panel-heading"><b>${products[i].name}</b></div>
           <div class="panel-body"><img src="${products[i].image}" class="img-responsive" style="width:100%" alt="Image"></div>
           <div class="panel-footer"><h2 id="price">$${products[i].price}</h2><BR>
           <label id ="quantitylabel" name="quantity${[i]}_label">Quantity Desired</label><BR>
-          <input type="text" onkeyup="checkQuantityTextbox(this);" id ="quantitytextbox" name="quantity_textbox[${i}]" ></input><BR>
-          <span id="quantitytextboxmessage" name="quantity_textbox[i]_message">Enter a quantity</span><BR><BR>
+          <span id="quantitytextbox[${i}]_message" class="quantitytextbox[${i}]_message" name="quantitytextbox[${i}]_message">Enter a quantity</span><BR><BR>
+          <input type="text" id ="quantitytextbox" class="quantitytextbox[${i}]" name="quantitytextbox[${i}]" onkeyup="checkQuantityTextbox(this);" ></input><BR>
           <label id ="quantityavailablemessage" name="quantity_available[${i}]_message">Quantity Available</label><BR>
           <p>${products[i].quantity_available}</p>
          </div>

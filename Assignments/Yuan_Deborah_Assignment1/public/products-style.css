@@ -36,7 +36,7 @@ p {
     border-collapse: collapse;
     margin: 25px 0;
     font-size: 0.9 em;
-    min-width: 400px;
+    min-width: 600px;
     font-family: 'Source Sans Pro', sans-serif;
     border-radius: 5px 5px 0 0;
     overflow: hidden;
@@ -52,7 +52,7 @@ p {
 
 .invoice-table th,
 .invoice-table td {
-    padding: 12px 15px;
+    padding: 12px 25px;
 }
 
 .invoice-table tbody tr{

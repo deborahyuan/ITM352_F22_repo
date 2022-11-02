@@ -57,7 +57,7 @@ let valid = true; // assume that all terms are valid
 let ordered = "";
 let allblank = false; // assume that it ISN'T all blank
 
-let qtys = request.body[`quantity_textbox`];
+let qtys = request.body[`quantitytextbox`];
 
 for (let i in qtys) { // Iterate over all text boxes in the form.
     q = qtys[i];
@@ -81,7 +81,7 @@ for (let i in qtys) { // Iterate over all text boxes in the form.
     }
 }
 
-if (qtys.join("") == 0) { // if the array qtys adds up to 0, that means there are no quantities being purchased
+if (qtys.join("") == 0) { // if the array qtys adds up to 0, that means there are no quantities being
     allblank = true;
     console.log(allblank);
 }
