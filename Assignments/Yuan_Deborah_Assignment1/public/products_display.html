@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html>
+<!-- 
+Products Display for Assignment1
+Author: Deborah Yuan
+Date: 11/2/22
+Desc: This html page pulls data from a separate products file (products.json) and displays the files without hardcoding any values. In this particular case, the store has 6 different models of iPhones. The page will present a variety of error messages if the quantities desired for purchase are invalid. This page also contains a form, which will be submitted to the server (server.js), where the data will then be validated. If the user attempts to submit invalid quantities for purchase despite error messages, they will be redirected back to this page to fix their errors. This page also has a navigation bar that allows users to switch between the Home page (index) and the products page (this page). The base template for this site was taken from w3 schools, but has been adequately modified to fit the needs of this store.
+-->
+
 
 <head>
   <meta charset="utf-8">
@@ -60,16 +67,23 @@ function isNonNegativeInteger(queryString, returnErrors = false) {
         function checkQuantityTextbox(theTextbox) { // EC IR2: Added additional text and font styles to indicate whether quantities were valid or not
             let input_string = theTextbox.value;
             let error_array = isNonNegativeInteger(input_string, true);
-            if (Number(input_string) > document.getElementById(theTextbox.name+'_available').innerHTML) { // EC IR3: PARTIAL COMPLETION: Having 'quantitytextbox[${i}]_available_message' display a red error message if Available Quantity > Stock
+            let test = document.getElementsByClassName(theTextbox.name+'').item(0);
+            if (Number(input_string) > document.getElementById(theTextbox.name+'_available').innerHTML) { // EC IR3: Having 'quantitytextbox[${i}]_available_message' display a red error message if Available Quantity > Stock, have quantitytextbox readjust to valid quantity, change textbox border to red
               document.getElementById(theTextbox.name+ '_message').outerHTML = ('<span id="'+ theTextbox.name + '_message" name="'+ theTextbox.name+'_message"><font color="red"><b>We don\'t have ' +input_string+ ' available.</b></font></span>');
+              var extra = input_string - document.getElementById(theTextbox.name+'_available').innerHTML
+              setTimeout(function () {
+                test.value = input_string - extra
+              }, 500);
+              test.style.borderColor = "red";
               return;
-            }
+            } else {
+              test.style.borderColor = "black";
+            };
             if (error_array.length == 0) {
               document.getElementById(theTextbox.name+ '_message').innerHTML = ('You want <b>'+ input_string+'</b>');
             } else {
               document.getElementById(theTextbox.name+ '_message').innerHTML  = ('<font color="red"><b>Quantity is '+ error_array.join("; ")+'</b></font>');
             }
-            
         };
 
         let params = (new URL(document.location)).searchParams;
@@ -136,11 +150,13 @@ function isNonNegativeInteger(queryString, returnErrors = false) {
           <div class="panel-footer"><h2 id="price">$${products[i].price}</h2><BR>
           <label id ="quantitylabel" name="quantity${[i]}_label">Quantity Desired</label><BR>
           <span id="quantitytextbox[${i}]_message" name="quantitytextbox[${i}]_message">Enter a quantity</span><BR><BR>
-          <input type="text" id ="quantitytextbox" name="quantitytextbox[${i}]" onkeyup="checkQuantityTextbox(this)"></input><BR><BR>
+          <input type="text" id ="quantitytextbox" class="quantitytextbox[${i}]" name="quantitytextbox[${i}]" onkeyup="checkQuantityTextbox(this)"></input><BR><BR>
+          <div id="qtyform">
           <label id ="quantitytextbox[${i}]_available_message" name="quantitytextbox[${i}]_available_message">Quantity Available</label><BR>
           <p id ="quantitytextbox[${i}]_available" name ="quantitytextbox[${i}]_available">${products[i].quantity_available}</p>
           <label id ="quantitysoldemessage" name="quantity_sold[${i}]_message">Quantity Sold</label><BR>
           <p>${products[i].quantity_sold}</p>
+          </div>
          </div>
          </div>
          </div>
@@ -153,9 +169,30 @@ function isNonNegativeInteger(queryString, returnErrors = false) {
 
 <footer class="container-fluid text-center"> <!-- footer -->
   <input type="submit" value='Purchase' id="button"></input></form>
+  <script type="text/javascript">
+    (function() {
+      var form = document.getElementsByName('quantity_form')[0];
+      for (i in products) {
+      if (localStorage[`quantitytextbox[${i}]`] !== undefined) {
+        var displayArea = document.getElementById('qtyform');
+        displayArea.textContent = localStorage[`quantitytextbox[${i}]`];
+      } else {
+      console.log ('error')
+      }
+      }
+      form.addEventListener('submit', function() {
+        var nameField = document.getElementsByName(`quantitytextbox[${i}]`)[0];
+        localStorage[`quantitytextbox[${i}]`] = nameField.value;
+      }, false);
+    } 
+    )();
+  </script>
   <h3 class="footertext">
     <B>Apple Online Store</B>
   </h3>
+
+
+
 </footer>
 
 </body>

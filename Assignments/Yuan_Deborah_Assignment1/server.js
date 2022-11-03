@@ -29,7 +29,7 @@ function isNonNegativeInteger(queryString, returnErrors = false) {
 
 
 var products = require(__dirname + '/products.json');
-products.forEach( (prod,i) => {prod.total_sold = 0}); // for each element of the array that it iterates through, it assigns the attribute the value of 0
+/* products.forEach( (prod,i) => {prod.total_sold = 0}); // for each element of the array that it iterates through, it assigns the attribute the value of 0 */
 
 
 
