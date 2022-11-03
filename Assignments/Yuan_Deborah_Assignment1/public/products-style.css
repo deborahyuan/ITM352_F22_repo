@@ -1,23 +1,14 @@
-#quantitytextbox {
-    border-radius: 5px;
-    width: 60px;
-    height: 40px;
-    position: relative;
-}
-#button {
-    background-color: black;
-    border-color:white;
-    border-width: 5px;
-    color: white;
-    width: 300px;
-    height: 40px;
-    margin: 0;
-    position: relative;
-    border-radius: 12px;
-    padding: 2 2 2 2em;
-    font-family: 'Source Sans Pro', sans-serif;
-    font-weight: bolder;
-}
+/*  
+Products Style CSS for Assignment1
+Author: Deborah Yuan
+Date: 11/2/22
+Desc: This css stylesheet is used for all 3 html pages under /public. The backbone css was provided in a bootstrap template sourced from w3 schools; it is not shown here, can be found in the head of both index.html and products_display.html. This stylesheet mostly addresses small tweaks and ALL of the css for invoice.html, as that file does not use the bootstrap template.
+*/
+
+
+  /*//////////////////*/
+ /* general text css */
+/*//////////////////*/
 
 h1 {
     font-family: 'Source Sans Pro', sans-serif;
@@ -36,13 +27,41 @@ p {
     font-family: 'Source Sans Pro', sans-serif;
 }
 
-/* invoice table styling */
+/* quantity textbox adjustments */
+#quantitytextbox {
+    border-radius: 5px;
+    width: 60px;
+    height: 40px;
+    position: relative;
+}
 
+/* submit buttons on products_display.html and invoice.html */
+#button {
+    background-color: black;
+    border-color:white;
+    border-width: 5px;
+    color: white;
+    width: 300px;
+    height: 40px;
+    margin: 0;
+    position: relative;
+    border-radius: 12px;
+    padding: 2 2 2 2em;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: bolder;
+}
+
+    /*///////////////////////*/
+   /* invoice table styling */
+  /*///////////////////////*/
+
+/* table title "Invoice" */
 .invoiceheader {
     margin-left: auto;
     margin-right: auto;
 }
 
+/* table general design */
 .invoice-table {
     border-collapse: collapse;
     margin-left:auto; 
@@ -55,6 +74,7 @@ p {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
+/* table header row*/
 .invoice-table thead tr {
     background-color: black;
     color: white;
@@ -62,20 +82,23 @@ p {
     font-weight: bold;
 }
 
+/* table header and table data cell padding */
 .invoice-table th,
 .invoice-table td {
     padding: 12px 25px;
 }
 
+/* table row borders */
 .invoice-table tbody tr{
     border-bottom: 1px solid white;
 
+/* table row alternating background colors */
 }
 .invoice-table tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
 }
 
-
+/* table row bottom border line */
 .invoice-table tbody tr:last-of-type,
 .invoice-table tbody tr:nth-last-of-type(7){
     border-bottom: 2px solid black;
@@ -86,11 +109,15 @@ p {
     border-bottom: 3px dashed black;
 }
 
+/* table row highlight light blue when hovered */
 .invoice-table tbody tr:hover {
     background-color: #a1d3d4;
 }
 
-/*video*/
+   /*///////*/
+  /* video */
+ /*///////*/
+
 /* Style the video: 100% width and height to cover the entire window */
 #myVideo {
     position: absolute;
@@ -102,7 +129,7 @@ p {
     max-height: auto;
   }
   
-  /* Add some content at the bottom of the video/page */
+  /* iPhone text */
   .content {
     position: fixed;
     top: 50px;
@@ -130,6 +157,7 @@ p {
     cursor: pointer;
   }
   
+  /* button hover glow */
   #myBtn:hover {
     box-shadow: 0 0 15px 1px white;
   }

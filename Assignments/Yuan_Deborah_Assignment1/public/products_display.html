@@ -7,7 +7,6 @@ Date: 11/2/22
 Desc: This html page pulls data from a separate products file (products.json) and displays the files without hardcoding any values. In this particular case, the store has 6 different models of iPhones. The page will present a variety of error messages if the quantities desired for purchase are invalid. This page also contains a form, which will be submitted to the server (server.js), where the data will then be validated. If the user attempts to submit invalid quantities for purchase despite error messages, they will be redirected back to this page to fix their errors. This page also has a navigation bar that allows users to switch between the Home page (index) and the products page (this page). The base template for this site was taken from w3 schools, but has been adequately modified to fit the needs of this store.
 -->
 
-
 <head>
   <meta charset="utf-8">
 
@@ -25,6 +24,7 @@ Desc: This html page pulls data from a separate products file (products.json) an
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
 
+  <!-- my own stylesheet (products-style.css) -->
   <link href="products-style.css" rel="stylesheet">
   <script src="../products.json"></script> <!-- loading in product data from products.json -->
   <style>
@@ -47,56 +47,66 @@ Desc: This html page pulls data from a separate products file (products.json) an
 </head>
 
 <script>
-function isNonNegativeInteger(queryString, returnErrors = false) {
+  /* function section */
+
+  // isNonNegativeInteger tests the input for errors, then returns error messages if any
+  function isNonNegativeInteger(queryString, returnErrors = false) {
     errors = []; // assume no errors at first
     if (Number(queryString) != queryString) {
-        errors.push('Not a number!'); // Check if string is a number value
-        } else {
-        if (queryString < 0) errors.push('a Negative value!'); // Check if it is non-negative
-        if (parseInt(queryString) != queryString) errors.push('Not an integer!'); // Check that it is an integer
-         }
+      errors.push('Not a number!'); // Check if string is a number value
+    } else {
+      if (queryString < 0) errors.push('a Negative value!'); // Check if it is non-negative
+      if (parseInt(queryString) != queryString) errors.push('Not an integer!'); // Check that it is an integer
+    }
 
     if (returnErrors) {
-        return errors;
+      return errors;
     } else if (errors.length == 0) {
-        return true;
+      return true;
     } else {
-        return false;
+      return false;
     }
- }
-        function checkQuantityTextbox(theTextbox) { // EC IR2: Added additional text and font styles to indicate whether quantities were valid or not
-            let input_string = theTextbox.value;
-            let error_array = isNonNegativeInteger(input_string, true);
-            let test = document.getElementsByClassName(theTextbox.name+'').item(0);
-            if (Number(input_string) > document.getElementById(theTextbox.name+'_available').innerHTML) { // EC IR3: Having 'quantitytextbox[${i}]_available_message' display a red error message if Available Quantity > Stock, have quantitytextbox readjust to valid quantity, change textbox border to red
-              document.getElementById(theTextbox.name+ '_message').outerHTML = ('<span id="'+ theTextbox.name + '_message" name="'+ theTextbox.name+'_message"><font color="red"><b>We don\'t have ' +input_string+ ' available.</b></font></span>');
-              var extra = input_string - document.getElementById(theTextbox.name+'_available').innerHTML
-              setTimeout(function () {
-                test.value = input_string - extra
-              }, 500);
-              test.style.borderColor = "red";
-              return;
-            } else {
-              test.style.borderColor = "black";
-            };
-            if (error_array.length == 0) {
-              document.getElementById(theTextbox.name+ '_message').innerHTML = ('You want <b>'+ input_string+'</b>');
-            } else {
-              document.getElementById(theTextbox.name+ '_message').innerHTML  = ('<font color="red"><b>Quantity is '+ error_array.join("; ")+'</b></font>');
-            }
-        };
+  }
 
-        let params = (new URL(document.location)).searchParams;
-        
-        console.log("Params=" + params);
-        // Check for an error and if so, pop up an alert to the user
-        if (params.has("error")) {
-            let err_msg = params.get("error");
-            alert(err_msg);
-        }
-  
+  // checkQuantityTextbox uses the input to write out errors, adjust textbox quantities, or recolor text/textbox borders
+  function checkQuantityTextbox(theTextbox) { // EC IR2: Added additional text and font styles to indicate whether quantities were valid or not
+    let input_string = theTextbox.value;
+    let error_array = isNonNegativeInteger(input_string, true);
+    let test = document.getElementsByClassName(theTextbox.name + '').item(0); // let test = 'quantitytextbox'
+
+    /* EC IR3: Having 'quantitytextbox[${i}]_available_message' display a red error message if Available Quantity > Stock, have quantitytextbox readjust to valid quantity, change textbox border to red */
+    if (Number(input_string) > document.getElementById(theTextbox.name + '_available').innerHTML) { // if user inputted quantity is > products[i].quantity_available, then...
+      document.getElementById(theTextbox.name + '_message').outerHTML = ('<span id="' + theTextbox.name + '_message" name="' + theTextbox.name + '_message"><font color="red"><b>We don\'t have ' + input_string + ' available.</b></font></span>'); // change quantitytextbox[${i}]_available_message's outerHTML to write that x quantity is not available
+      var extra = input_string - document.getElementById(theTextbox.name + '_available').innerHTML // defining extra, which is the user inputted quantity - products[i].quantity_available
+      setTimeout(function () { // delays this code for a bit (500) so the user inputted quantity that exceeds stock isn't INSTANTLY changed
+        test.value = input_string - extra // quantitytextbox = user inputted quantity - the # of products that exceeds stock
+      }, 500);
+      test.style.borderColor = "red"; // changes quantitytextbox's border to red
+      return;
+    } else {
+      test.style.borderColor = "black"; // if the quantity is fixed, changes quantitytextbox's border to red
+    };
+
+    if (error_array.length == 0) { // EC IR2 (pt.2): if there are no errors...
+      document.getElementById(theTextbox.name + '_message').innerHTML = ('You want <b>' + input_string + '</b>'); //  tell the user how much they want
+    } else { // tell the user what the errors are and make the text red
+      document.getElementById(theTextbox.name + '_message').innerHTML = ('<font color="red"><b>Quantity is ' + error_array.join("; ") + '</b></font>');
+    }
+  };
+
+  /* allows for us to create an error alert based off of the results of the server's validataion*/
+  let params = (new URL(document.location)).searchParams;
+
+  console.log("Params=" + params); // shows what the params are in the console
+  // Check for an error and if so, pop up an alert to the user
+  if (params.has("error")) {
+    let err_msg = params.get("error");
+    alert(err_msg);
+  }
+
 </script>
 
+<!-- jumbotron from w3 schools -->
 <div class="jumbotron">
   <div class="container text-center">
     <h1>iPhone</h1>
@@ -104,7 +114,8 @@ function isNonNegativeInteger(queryString, returnErrors = false) {
   </div>
 </div>
 
-<nav class="navbar navbar-inverse">   <!-- navigation bar from w3 schools -->
+<nav class="navbar navbar-inverse">
+  <!-- navigation bar from w3 schools -->
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -113,7 +124,8 @@ function isNonNegativeInteger(queryString, returnErrors = false) {
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href="#">
-        <img src="https://raw.githubusercontent.com/deborahyuan/Assignment1imgs/main/Assignment1_images/Apple-Logo.png" width="20" alt=""></a>
+        <img src="https://raw.githubusercontent.com/deborahyuan/Assignment1imgs/main/Assignment1_images/Apple-Logo.png"
+          width="20" alt=""></a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
@@ -133,16 +145,18 @@ function isNonNegativeInteger(queryString, returnErrors = false) {
 </nav>
 
 <!-- formatting provided by w3 schools -->
-      <form name='quantity_form' action="/purchase" method="POST"> <!-- start of the form -->
-        <script>
-        for (i in products) { // for loop that loops x amount of times, depending on the number of products in 'products.json'
-          row = "";
-          if (parseInt(i/3) == i/3) { // 
-          document.write(`<div class="container">
-            <div class="row">`) 
-          }}
-          for (i in products){
-          document.write(`
+<form name='quantity_form' action="/purchase" method="POST">
+  <!-- start of the form -->
+  <script>
+    for (i in products) { // for loop that loops x amount of times, depending on the number of products in 'products.json'
+      row = "";
+      if (parseInt(i / 3) == i / 3) { // 
+        document.write(`<div class="container">
+            <div class="row">`)
+      }
+    }
+    for (i in products) {
+      document.write(`
           <div class="col-sm-4" >
           <div class="panel panel-primary" style="border-radius: 10px 10px 10px 10px; overflow: hidden; box-shadow: 0 0 30px rgba(0, 0, 0, 0.30); border: white;">
           <div class="panel-heading" style="background-color:black"><b>${products[i].name}</b></div> <!-- some inline css to override the template defaults -->
@@ -159,39 +173,21 @@ function isNonNegativeInteger(queryString, returnErrors = false) {
           </div>
          </div>
          </div>
-         </div>
+          </div>
         `)
-        }
-</script>
-</div>
-<br><br>
-
-
-<footer class="container-fluid text-center"> <!-- footer -->
-  <input type="submit" value='Purchase' id="button"></input></form>
-  <script type="text/javascript">
-    (function() {
-      var form = document.getElementsByName('quantity_form')[0];
-      for (i in products) {
-      if (localStorage[`quantitytextbox[${i}]`] !== undefined) {
-        var displayArea = document.getElementById('qtyform');
-        displayArea.textContent = localStorage[`quantitytextbox[${i}]`];
-      } else {
-      console.log ('error')
-      }
-      }
-      form.addEventListener('submit', function() {
-        var nameField = document.getElementsByName(`quantitytextbox[${i}]`)[0];
-        localStorage[`quantitytextbox[${i}]`] = nameField.value;
-      }, false);
-    } 
-    )();
+    }
   </script>
-  <h3 class="footertext">
-    <B>Apple Online Store</B>
-  </h3>
+  </div>
+  <br><br>
 
 
+  <footer class="container-fluid text-center">
+    <!-- footer -->
+    <input type="submit" value='Purchase' id="button"></input>
+</form>
+<h3 class="footertext">
+  <B>Apple Online Store</B>
+</h3>
 
 </footer>
 
