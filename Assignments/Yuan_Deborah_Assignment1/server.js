@@ -14,7 +14,7 @@ app.use(express.static(__dirname + "/public")); // route all other GET/POST requ
 app.use("/css", express.static(__dirname + "/public")); // ?
 app.use(express.urlencoded({ extended: true }));
 
-/* functions */
+/* functions */ 
 
 // isNonNegativeInteger tests the input for errors, then returns error messages if any
 function isNonNegativeInteger(queryString, returnErrors = false) {
